@@ -4,6 +4,12 @@ const pluginEleventyNavigation = require("@11ty/eleventy-navigation");
 const pluginSitemap = require("@quasibit/eleventy-plugin-sitemap");
 
 module.exports = function (eleventyConfig) {
+    /**
+     *  PLUGINS
+     *      Adds additional Eleventy functionality through official or community-created add-ons.
+     *      https://www.11ty.dev/docs/plugins/
+     */
+
     // Add Sitemap Plugin
     eleventyConfig.addPlugin(pluginSitemap, {
         sitemap: {
@@ -11,44 +17,32 @@ module.exports = function (eleventyConfig) {
         },
     });
 
-    // Other plugins and passthrough copies
-    eleventyConfig.addPlugin(require("@11ty/eleventy-navigation"));
-    eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-directory-output"));
-
-    eleventyConfig.addPassthroughCopy("./src/assets/css");
-    eleventyConfig.addPassthroughCopy("./src/assets/images");
-
-    return {
-        dir: {
-            input: "src",
-            output: "public",
-            includes: "_includes",
-            data: "_data",
-        },
-        htmlTemplateEngine: "njk",
-    };
-};
-
-
-
-module.exports = function (eleventyConfig) {
-    /**
-     *  PLUGINS
-     *      Adds additional eleventy functionality through official or community-created add-ons
-     *      https://www.11ty.dev/docs/plugins/
-     */
-
+    // Add Directory Output Plugin
     // Provides benchmarks in the terminal when a website is built. Useful for diagnostics.
     // https://www.11ty.dev/docs/plugins/directory-output/
     eleventyConfig.addPlugin(pluginDirectoryOutput);
 
-    // Allows navigation items to be defined in a scalable way via the front matter
+    // Add Navigation Plugin
+    // Allows navigation items to be defined in a scalable way via the front matter.
     // https://www.11ty.dev/docs/plugins/navigation/
     eleventyConfig.addPlugin(pluginEleventyNavigation);
 
     /**
+     *  FILTERS
+     *      Define custom filters for use in templates.
+     */
+
+    // Add absoluteUrl filter
+    eleventyConfig.addFilter("absoluteUrl", (url, base) => {
+        if (!base) {
+            base = "https://yourdomain.com"; // Replace with your actual domain
+        }
+        return new URL(url, base).toString();
+    });
+
+    /**
      *  PASSTHROUGH'S
-     *      Copy/paste non-template files straight to /public, without any interference from the eleventy engine
+     *      Copy/paste non-template files straight to /public, without any interference from the Eleventy engine.
      *      https://www.11ty.dev/docs/copy/
      */
     eleventyConfig.addPassthroughCopy("./src/assets/css");
@@ -58,6 +52,10 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy("./src/assets/js");
     eleventyConfig.addPassthroughCopy("./src/assets/svgs");
 
+    /**
+     *  RETURN CONFIGURATION
+     *      Set input/output directories and template engines.
+     */
     return {
         dir: {
             input: "src",
@@ -65,6 +63,6 @@ module.exports = function (eleventyConfig) {
             includes: "_includes",
             data: "_data",
         },
-        htmlTemplateEngine: "njk",
+        htmlTemplateEngine: "njk", // Use Nunjucks for rendering HTML
     };
 };
