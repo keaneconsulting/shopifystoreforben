@@ -4,12 +4,32 @@ const pluginEleventyNavigation = require("@11ty/eleventy-navigation");
 const pluginSitemap = require("@quasibit/eleventy-plugin-sitemap");
 
 module.exports = function (eleventyConfig) {
-  eleventyConfig.addPlugin(pluginSitemap, {
-    sitemap: {
-      hostname: "https://yourdomain.com",
-    },
-  });
+    // Add Sitemap Plugin
+    eleventyConfig.addPlugin(pluginSitemap, {
+        sitemap: {
+            hostname: "https://yourdomain.com", // Replace with your actual domain
+        },
+    });
+
+    // Other plugins and passthrough copies
+    eleventyConfig.addPlugin(require("@11ty/eleventy-navigation"));
+    eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-directory-output"));
+
+    eleventyConfig.addPassthroughCopy("./src/assets/css");
+    eleventyConfig.addPassthroughCopy("./src/assets/images");
+
+    return {
+        dir: {
+            input: "src",
+            output: "public",
+            includes: "_includes",
+            data: "_data",
+        },
+        htmlTemplateEngine: "njk",
+    };
 };
+
+
 
 module.exports = function (eleventyConfig) {
     /**
