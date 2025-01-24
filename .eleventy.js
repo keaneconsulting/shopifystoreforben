@@ -40,6 +40,12 @@ module.exports = function (eleventyConfig) {
         return new URL(url, base).toString();
     });
 
+    // Add date filter
+    eleventyConfig.addFilter("date", (date, format) => {
+        const { DateTime } = require("luxon");
+        return DateTime.fromJSDate(date).toFormat(format || "yyyy-MM-dd");
+    });
+
     /**
      *  PASSTHROUGH'S
      *      Copy/paste non-template files straight to /public, without any interference from the Eleventy engine.
