@@ -1,6 +1,15 @@
 // Plugin Imports
 const pluginDirectoryOutput = require("@11ty/eleventy-plugin-directory-output");
 const pluginEleventyNavigation = require("@11ty/eleventy-navigation");
+const pluginSitemap = require("@quasibit/eleventy-plugin-sitemap");
+
+module.exports = function (eleventyConfig) {
+  eleventyConfig.addPlugin(pluginSitemap, {
+    sitemap: {
+      hostname: "https://yourdomain.com",
+    },
+  });
+};
 
 module.exports = function (eleventyConfig) {
     /**
